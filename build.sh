@@ -22,7 +22,7 @@ cp kernel.elf iso/boot/kernel.elf
 cp misc/grub.cfg iso/boot/grub/grub.cfg
 
 # Generate the ISO file
-grub-mkrescue -o os.iso iso
+grub-mkrescue -o bin/os.iso iso
 
 # Clean up
 rm *.o
@@ -30,4 +30,4 @@ rm *.elf
 rm -rf iso
 
 # Run QEMU as if the OS is run off a CD, and set the RTC to the same time as the host computer
-qemu-system-i386 -cdrom os.iso -rtc base=localtime 
+qemu-system-i386 -cdrom bin/os.iso -rtc base=localtime 

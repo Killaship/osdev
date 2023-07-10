@@ -37,18 +37,16 @@ extern kmain
 
 
 start:
-     lgdt [gdt_pointer]  
-     cli
-     jmp CODE_SEG:kmain
+    lgdt [gdt_pointer]  
+    jmp CODE_SEG:kmain
     .setcs:
-    mov ax, DATA_SEG          ; Setup the segment registers with our flat data selector
+    mov ax, DATA_SEG          
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
     mov ss, ax
-    mov esp, stack_space        ; set stack pointer		
-
+    mov esp, stack_space
 section .bss
 resb 8192 ; 8KB for stack
 stack_space:
