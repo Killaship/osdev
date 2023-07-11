@@ -1,3 +1,4 @@
+#include "../inc/system.h"
 #include "../inc/common.h"
 #include <stdint.h>
 #include <stddef.h>
@@ -5,6 +6,11 @@
 
 unsigned int current_loc = 0; // How far are we into video memory?
 char *vidptr = (char*)0xb8000; // Pointer to beginning of VGA text mode memory
+
+void disable_cursor() {
+    write_port(0x3D4, 0x0A);
+	write_port(0x3D5, 0x20);
+}
 
 void kprint(const char *str) { // Basically just a wrapper function (laziness go brrrrr)
     kprintc(str, DEFAULT_COLOR);
@@ -45,7 +51,17 @@ void clear_screen(void) {
 	unsigned int i = 0;
 	while (i < SCREENSIZE) {
 		vidptr[i++] = ' ';
-		vidptr[i++] = 0x07;
+		vidptr[i++] = DEFAULT_COLOR;
+	}
+	current_loc = 0;
+
+}
+
+void paint_screen(int color) {
+	unsigned int i = 0;
+	while (i < SCREENSIZE) {
+		vidptr[i++] = ' ';
+		vidptr[i++] = color;
 	}
 	current_loc = 0;
 

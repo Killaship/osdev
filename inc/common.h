@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#define sizeof(type) (char *)(&type+1)-(char*)(&type)
+//#define sizeof(type) (char *)(&type+1)-(char*)(&type)
+
 void* memset(void* bufptr, int value, size_t size);
 char *strncpy(char *s1, const char *s2, size_t n);
 void* memcpy(void* dstptr, const void* srcptr, size_t size);
