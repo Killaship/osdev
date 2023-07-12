@@ -1,4 +1,5 @@
-// This file contains things like exception handling, and setting up the IDT, as well as port I/O
+// This file contains things like exception handling, and setting up the IDT, as well as port I/O,
+// and miscellaneous CPU-related functions.
 #include "../inc/system.h"
 #include "../inc/video.h"
 #include "../inc/common.h"
@@ -21,6 +22,27 @@ void sti() {asm("sti");} // Restore interrupts
 void write_port(unsigned short port, unsigned char data) {
 	asm volatile ("outb %%al, %%dx" :: "a" (data), "d" (port));
 }
+
+static inline int cpuid_string(int code, int where[4]) {
+  __asm__ volatile ("cpuid":"=a"(*where),"=b"(*(where+0)),
+               "=d"(*(where+1)),"=c"(*(where+2)):"a"(code));
+  return (int)where[0];
+}
+ 
+const char *cpu_string() {
+	static char s[16] = "BogusProces!";
+	cpuid_string(0, (int*)(s));
+	return s;
+}
+
+
+void reboot() {
+    uint8_t good = 0x02;
+    while (good & 0x02)
+        good = read_port(0x64);
+    write_port(0x64, 0xFE);
+}
+
 
 void load_idt(unsigned long *idt_ptr) {
 	asm volatile ("lidt (%%eax)" :: "a" (idt_ptr));

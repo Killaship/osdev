@@ -1,5 +1,7 @@
 # Disable stack protector, compile for 32-bit, enable debug symbols,
 # compile/assemble but don't link, compile for freestanding
+mkdir bin
+
 gcc -fno-stack-protector -m32 -g -c src/kernel.c -o kernel.o -ffreestanding
 gcc -fno-stack-protector -m32 -g -c src/video.c -o video.o -ffreestanding
 gcc -fno-stack-protector -m32 -g -c src/common.c -o common.o -ffreestanding

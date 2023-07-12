@@ -22,7 +22,9 @@ struct IDT_entry {
 	unsigned short int offset_higherbits;
 };
 
-
+const char *cpu_string();
+static inline int cpuid_string(int code, int where[4]);
+void reboot();
 
 void idt_init(void);
 void stacktrace(unsigned int maxframes);

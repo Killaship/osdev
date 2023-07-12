@@ -18,6 +18,9 @@ void kprint(const char *str) { // Basically just a wrapper function (laziness go
 
 void kprintc(const char *str, int color) {
 	for(size_t i = 0; i < strlen(str); i++) {
+		/*if (current_loc >= SCREENSIZE) {
+			scroll();
+		}*/
 		switch(str[i]) {
 		case '\n':
 			kprint_newline();

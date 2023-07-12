@@ -13,4 +13,4 @@ void kprint_newline(void);
 void clear_screen(void);
 void paint_screen(int color);
 void disable_cursor(void);
-void enable_cursor(void);
+//void enable_cursor(void);
