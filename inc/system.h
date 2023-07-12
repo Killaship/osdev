@@ -11,6 +11,9 @@
 char read_port(unsigned short port);
 void write_port(unsigned short port, unsigned char data);
 
+void cli(void);
+void sti(void);
+
 struct IDT_entry {
 	unsigned short int offset_lowerbits;
 	unsigned short int selector;

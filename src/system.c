@@ -1,4 +1,4 @@
-// This file contains things like exception handling, and setting up the IDT.
+// This file contains things like exception handling, and setting up the IDT, as well as port I/O
 #include "../inc/system.h"
 #include "../inc/video.h"
 #include "../inc/common.h"
@@ -14,6 +14,8 @@ char read_port(unsigned short port) {
 	return value;
 }
 
+void cli() {asm("cli");} // Disable interrupts
+void sti() {asm("sti");} // Restore interrupts
 
 
 void write_port(unsigned short port, unsigned char data) {

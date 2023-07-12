@@ -1,2 +1,4 @@
 bin/os.iso
-*.elf
+bin/kernel.elf
+.vscode/*
+
