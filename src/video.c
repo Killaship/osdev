@@ -12,15 +12,30 @@ void disable_cursor() {
 	write_port(0x3D5, 0x20);
 }
 
+/*
+delete this later
+
+#define LINES 25 
+#define COLUMNS 80
+#define SCREENSIZE 2 * COLUMNS * LINES
+*/
+
+
+int rowfromloc(int loc) {
+    return loc / (2 * 80);
+}
+
 void kprint(const char *str) { // Basically just a wrapper function (laziness go brrrrr)
     kprintc(str, DEFAULT_COLOR);
 }
 
+void scroll() {
+	
+}
+
 void kprintc(const char *str, int color) {
 	for(size_t i = 0; i < strlen(str); i++) {
-		/*if (current_loc >= SCREENSIZE) {
-			scroll();
-		}*/
+
 		switch(str[i]) {
 		case '\n':
 			kprint_newline();
@@ -33,6 +48,9 @@ void kprintc(const char *str, int color) {
 			vidptr[current_loc++] = str[i];
 			vidptr[current_loc++] = color;
 			break;
+		}
+		if (rowfromloc(current_loc)) {
+			scroll();
 		}
 	}
 }

@@ -78,7 +78,7 @@ void idt_init(void) {
 		i++;
 	}
 
-	write_port(0x20, 0x11);
+	write_port(0x20, 0x11); // TODO: split this stuff off into a small function
 	write_port(0xA0, 0x11);
 	write_port(0x21, 0x20);
 	write_port(0xA1, 0x28);
@@ -205,6 +205,8 @@ void bsod(const int stopcode) {
 	
 	
 }
+
+// TODO: fix this ungodly mess
 
 void err_handler() {
 	// Say there's been an error, and then hang.

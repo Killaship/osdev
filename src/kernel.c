@@ -15,6 +15,5 @@ void kmain() {
 	kprint(itoa(gettime(0))); // seconds
     kprint_newline();
     kprint(cpu_string());
-
     while(1);
 }
