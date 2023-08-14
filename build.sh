@@ -32,4 +32,4 @@ rm -rf iso
 
 # Run QEMU as if the OS is run off a CD, and set the RTC to the same time as the host computer.
 # The commented out stuff at the end is for debugging.
-qemu-system-i386 -cdrom bin/os.iso -rtc base=localtime #-d int -no-reboot
+qemu-system-i386 -cdrom bin/os.iso -rtc base=localtime #-display curses #-d int -no-reboot

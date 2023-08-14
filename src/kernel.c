@@ -7,13 +7,13 @@ void kmain() {
     idt_init();
     kprint("Hello, world!\n");
 
+    char *time = (char *)timestring(); // cast because warnings go brrr
     kprint("System Time: "); // TODO: Find a way to print leading zeroes in the time
-	kprint(itoa(gettime(2))); // hours
-	kprint(":");
-	kprint(itoa(gettime(1))); // minutes
-	kprint(":");
-	kprint(itoa(gettime(0))); // seconds
+    kprintc(time,0x04);
     kprint_newline();
-    kprint(cpu_string());
+    
+    char *vendorstring = (char *)cpu_string(); // another cast to get rid of annoying type warnings
+    kprintc(vendorstring , 0x09);
+
     while(1);
 }

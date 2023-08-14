@@ -14,3 +14,5 @@ char* itoa(int i);
 int strcmp(const char *s1, const char *s2);
 int oct2bin(unsigned char *str, int size);
 void prntnum(unsigned long num, int base, char sign, char *outbuf);
+char *strcat(char *dst, const char *src);
+char *strcpy(char *dst, const char *src);

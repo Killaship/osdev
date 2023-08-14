@@ -24,7 +24,7 @@ struct IDT_entry {
 
 const char *cpu_string();
 static inline int cpuid_string(int code, int where[4]);
-void reboot();
+void reboot(); // todo: find out alternate/better ways to reboot (ACPI?)
 
 void idt_init(void);
 void stacktrace(unsigned int maxframes);

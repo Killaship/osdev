@@ -21,17 +21,10 @@ delete this later
 */
 
 
-int rowfromloc(int loc) {
-    return loc / (2 * 80);
-}
-
-void kprint(const char *str) { // Basically just a wrapper function (laziness go brrrrr)
+void kprint(const char *str) { // Basically just a wrapper around kprintc
     kprintc(str, DEFAULT_COLOR);
 }
 
-void scroll() {
-	
-}
 
 void kprintc(const char *str, int color) {
 	for(size_t i = 0; i < strlen(str); i++) {
@@ -49,8 +42,9 @@ void kprintc(const char *str, int color) {
 			vidptr[current_loc++] = color;
 			break;
 		}
-		if (rowfromloc(current_loc)) {
-			scroll();
+		if (current_loc >= SCREENSIZE) {
+			clear_screen(); // clear the screen and move the "cursor" to the top of the screen
+			current_loc = 0;
 		}
 	}
 }

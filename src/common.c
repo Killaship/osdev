@@ -1,5 +1,6 @@
 #include "../inc/common.h"
 
+// Commonly used freestanding functions, for when you don't have a standard library
 
 void* memset(void* bufptr, int value, size_t size) {
 	unsigned char* buf = (unsigned char*) bufptr;
@@ -166,4 +167,14 @@ void prntnum(unsigned long num, int base, char sign, char *outbuf)
 
     outbuf[j] = 0;
 
+}
+
+char *strcat(char *dst, const char *src) {
+    return strcpy(dst + strlen(dst), src);
+}
+
+char *strcpy(char *dst, const char *src) {
+    char *p = dst;
+    while ((*p ++ = *src ++) != '\0') {}
+    return dst;
 }

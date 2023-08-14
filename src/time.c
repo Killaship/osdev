@@ -1,7 +1,7 @@
 // This file contains things like RTC usage, and PIT setup.
 #include "../inc/system.h"
 #include "../inc/time.h"
-
+#include "../inc/common.h"
 
 int century_register = 0x00;
  
@@ -131,3 +131,26 @@ int gettime(int value) {
         
     }
 }
+
+const char *timestring() {
+
+      char *str[32];
+
+	char hours[4];
+      strncpy(hours, itoa(gettime(2)),4);
+      char minutes[4];
+      strncpy(minutes, itoa(gettime(1)),4);
+      char seconds[4];
+      strncpy(seconds, itoa(gettime(0)),4);
+
+	strcpy((char *)str, hours);
+      strcat((char *)str, ":");
+      strcat((char *)str, minutes);
+      strcat((char *)str, ":");
+      strcat((char *)str, seconds);
+
+      const char *time = (char *)str;
+      return time;
+}
+
+// TODO: PIT initialization and possibly system ticks / etc.
