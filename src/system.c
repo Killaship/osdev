@@ -4,8 +4,8 @@
 #include "../inc/video.h"
 #include "../inc/common.h"
 
-typedef void (*f)(void);
-f idtfunc[32];
+typedef void (*f)(void); // define "f" as a type for a void* function with no arguments
+f idtfunc[32]; // make an array full of these "f" types, which'll turn into the exception handlers.
 struct IDT_entry IDT[IDT_SIZE];
 
 
@@ -380,5 +380,5 @@ void err24_handler() {
 	while(1);
 }
 
-
+// this is the line that turns the f-type array into all the exception handlers. when setting up the IDT, we iterate through this
 f idtfunc[32] = {&err_handler, &err1_handler, &err2_handler, &err3_handler, &err4_handler, &err5_handler, &err6_handler, &err7_handler,&err8_handler,&err9_handler,&err10_handler,&err11_handler,&err12_handler,&err13_handler,&err14_handler,&err15_handler,&err16_handler,&err17_handler,&err18_handler,&err19_handler,&err20_handler,&err21_handler,&err15_handler,&err15_handler,&err15_handler,&err15_handler,&err22_handler,&err23_handler,&err24_handler,&err15_handler};

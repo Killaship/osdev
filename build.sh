@@ -31,5 +31,5 @@ rm *.o
 rm -rf iso
 
 # Run QEMU as if the OS is run off a CD, and set the RTC to the same time as the host computer.
-# The commented out stuff at the end is for debugging.
+# The commented out stuff at the end is for debugging. Uncomment "-display curses" for testing via SSH. (use -curses on older QEMU ver.)
 qemu-system-i386 -cdrom bin/os.iso -rtc base=localtime #-display curses #-d int -no-reboot
