@@ -61,24 +61,8 @@ void unmaskIRQ(int irq) {
                                                 // since we send to PIC2
 }
 
-void idt_init(void) {
-	
- 	unsigned long addr_address[32] = {0};
-	unsigned long idt_address;
-	unsigned long idt_ptr[2];
-	
-	int i = 0;
-	while(i < 31) {
-			addr_address[i] = (unsigned long)idtfunc[i];
-			IDT[i].offset_lowerbits = addr_address[i] & 0xffff;
-			IDT[i].selector = KERNEL_CODE_SEGMENT_OFFSET;
-			IDT[i].zero = 0;
-			IDT[i].type_attr = INTERRUPT_GATE;
-			IDT[i].offset_higherbits = (addr_address[i] & 0xffff0000) >> 16;	
-		i++;
-	}
-
-	write_port(0x20, 0x11); // TODO: split this stuff off into a small function
+void remap_irq() {
+	write_port(0x20, 0x11); 
 	write_port(0xA0, 0x11);
 	write_port(0x21, 0x20);
 	write_port(0xA1, 0x28);
@@ -88,7 +72,29 @@ void idt_init(void) {
 	write_port(0xA1, 0x01);
 	write_port(0x21, 0xff);
 	write_port(0xA1, 0xff);
+}
 
+void install_idt(int IRQ, void handler()) { // note: this function doesn't account for the remapped IRQs
+	unsigned long handler_addr = (unsigned long)handler;
+	IDT[IRQ].offset_lowerbits = handler_addr & 0xffff;
+	IDT[IRQ].selector = KERNEL_CODE_SEGMENT_OFFSET;
+	IDT[IRQ].zero = 0;
+	IDT[IRQ].type_attr = INTERRUPT_GATE;
+	IDT[IRQ].offset_higherbits = (handler_addr & 0xffff0000) >> 16;	
+}
+
+
+void idt_init(void) {
+	unsigned long idt_address;
+	unsigned long idt_ptr[2];
+	
+	int i = 0;
+	while(i < 31) {
+		install_idt(i, idtfunc[i]);
+		i++;
+	}
+
+	remap_irq();
 
 
 	idt_address = (unsigned long)IDT;
@@ -96,6 +102,8 @@ void idt_init(void) {
 	idt_ptr[1] = idt_address >> 16 ;
 
 	load_idt(idt_ptr);
+
+	unmaskIRQ(1);
 	
 }
 
@@ -118,6 +126,8 @@ void stacktrace(unsigned int maxframes) { // Stack tracer
         	stk = stk->ebp;
 	}
 }
+
+void panic() {bsod(25);}
 
 void bsod(const int stopcode) {
 	paint_screen(BSOD_COLOR);
@@ -198,6 +208,12 @@ void bsod(const int stopcode) {
 			break;
 		case 24: // #SX
 			kprintc("Error type: #SX", BSOD_COLOR);
+			break;
+		case 25:
+			kprintc("Kernel panic!", BSOD_COLOR);
+			break;
+		default:
+			kprintc("Error type: [invalid error code]", BSOD_COLOR);
 			break;
 	}
 	kprint_newline();

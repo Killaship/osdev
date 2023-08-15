@@ -27,4 +27,4 @@ static inline int cpuid_string(int code, int where[4]);
 void reboot(); // todo: find out alternate/better ways to reboot (ACPI?)
 
 void idt_init(void);
-void stacktrace(unsigned int maxframes);
+void panic(void);

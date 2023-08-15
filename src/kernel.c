@@ -16,6 +16,5 @@ void kmain() {
     
     char *vendorstring = (char *)cpu_string(); // another cast to get rid of annoying type warnings
     kprintc(vendorstring, 0x09);
-
     while(1); // there's nothing else to do, is there?
 }
