@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include <stddef.h>
+
 #include "../inc/common.h"
 
 // Commonly used freestanding functions, for when you don't have a standard library

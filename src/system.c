@@ -1,8 +1,9 @@
 // This file contains things like exception handling, and setting up the IDT, as well as port I/O,
-// and miscellaneous CPU-related functions.
+// and miscellaneous CPU-related functions. (Find syscalls in syscalls.c)
 #include "../inc/system.h"
 #include "../inc/video.h"
 #include "../inc/common.h"
+
 
 typedef void (*f)(void); // define "f" as a type for a void* function with no arguments
 f idtfunc[32]; // make an array full of these "f" types, which'll turn into the exception handlers.
@@ -23,7 +24,7 @@ void write_port(unsigned short port, unsigned char data) {
 	asm volatile ("outb %%al, %%dx" :: "a" (data), "d" (port));
 }
 
-static inline int cpuid_string(int code, int where[4]) {
+int cpuid_string(int code, int where[4]) {
   __asm__ volatile ("cpuid":"=a"(*where),"=b"(*(where+0)),
                "=d"(*(where+1)),"=c"(*(where+2)):"a"(code));
   return (int)where[0];
@@ -85,25 +86,24 @@ void install_idt(int IRQ, void handler()) { // note: this function doesn't accou
 
 
 void idt_init(void) {
-	unsigned long idt_address;
-	unsigned long idt_ptr[2];
-	
 	int i = 0;
 	while(i < 31) {
 		install_idt(i, idtfunc[i]);
 		i++;
 	}
-
+	
 	remap_irq();
 
-
+	unsigned long idt_address;
+	unsigned long idt_ptr[2];
+	
 	idt_address = (unsigned long)IDT;
 	idt_ptr[0] = (sizeof(struct IDT_entry) * IDT_SIZE) + ((idt_address & 0xffff) << 16);
 	idt_ptr[1] = idt_address >> 16 ;
-
+	
 	load_idt(idt_ptr);
 
-	unmaskIRQ(1);
+	//unmaskIRQ(1);
 	
 }
 
@@ -127,7 +127,7 @@ void stacktrace(unsigned int maxframes) { // Stack tracer
 	}
 }
 
-void panic() {bsod(25);}
+
 
 void bsod(const int stopcode) {
 	paint_screen(BSOD_COLOR);
@@ -222,6 +222,8 @@ void bsod(const int stopcode) {
 	
 }
 
+
+void panic() {bsod(25);}
 // TODO: fix this ungodly mess
 
 void err_handler() {

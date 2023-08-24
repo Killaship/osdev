@@ -1,6 +1,3 @@
-#include <stdint.h>
-#include <stddef.h>
-
 //#define sizeof(type) (char *)(&type+1)-(char*)(&type)
 
 void* memset(void* bufptr, int value, size_t size);
